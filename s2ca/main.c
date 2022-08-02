@@ -12,7 +12,7 @@ int wmain(int argc, wchar_t* argv[])
 	if (OpenClipboard(NULL))
 	{
 		EmptyClipboard();
-		HGLOBAL buffer = GlobalAlloc(GMEM_FIXED, size);
+		HGLOBAL buffer = GlobalAlloc(GMEM_MOVEABLE, size);
 		wchar_t* p = (wchar_t*)GlobalLock(buffer);
 		*p++ = L'{';
 		while(*arg) {
@@ -31,10 +31,10 @@ int wmain(int argc, wchar_t* argv[])
 		CloseClipboard();
 	}
 
-	keybd_event(0x11, 0, 0, 0);//press ctrl
-	keybd_event(0x56, 0, 0, 0);//press v
-	keybd_event(0x56, 0, 2, 0);//release v
-	keybd_event(0x11, 0, 2, 0);//release ctrl
+	keybd_event(VK_CONTROL, 0, 0, 0);//press ctrl
+	keybd_event('V', 0, 0, 0);//press v
+	keybd_event('V', 0, KEYEVENTF_KEYUP, 0);//release v
+	keybd_event(VK_CONTROL, 0, KEYEVENTF_KEYUP, 0);//release ctrl
 	
 	return 0;
 }
